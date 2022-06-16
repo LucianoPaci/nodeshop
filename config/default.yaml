@@ -1,0 +1,5 @@
+port: 3000
+env: development
+sqs:
+  url: https://sqs.us-east-1.amazonaws.com/520763495267/nodeshop.fifo
+  region: us-east-1
