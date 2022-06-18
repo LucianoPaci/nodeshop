@@ -7,6 +7,7 @@ const readConfig = require('./config')
 const winston = require('./logger')
 const routes = require('../routes/v1')
 const ApiError = require('../utils/ApiError')
+const MongoDB = require('./database')
 
 const config = readConfig()
 
@@ -24,6 +25,8 @@ module.exports = async function init() {
 
   // Initialize Morgan (HTTP Logs Middleware)
   app.use(morgan('dev'))
+
+  await MongoDB()
 
   // Initialize API
   app.use('/v1', routes)

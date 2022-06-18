@@ -1,4 +1,4 @@
-const { safeDump, safeLoad } = require('yaml-js')
+const { dump, load } = require('js-yaml')
 const { accessSync } = require('fs')
 const { join } = require('path')
 const nconf = require('nconf')
@@ -20,8 +20,8 @@ module.exports = function readConfig() {
   const envConfigPath = join(configRoot, `${environment}.yaml`)
 
   const yamlFormat = {
-    parse: safeLoad,
-    stringify: safeDump,
+    parse: load,
+    stringify: dump,
   }
 
   nconf
@@ -32,7 +32,7 @@ module.exports = function readConfig() {
       format: yamlFormat,
     })
     .file('fileDefault', {
-      file: envConfigPath,
+      file: defaultConfigPath,
       format: yamlFormat,
     })
 
@@ -41,5 +41,6 @@ module.exports = function readConfig() {
     environment: environment,
     port: port,
     logger: nconf.get('logger'),
+    db_uri: nconf.get('db_uri'),
   }
 }

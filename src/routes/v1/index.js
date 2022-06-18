@@ -8,5 +8,7 @@ router.get('/status', (req, res) => {
 })
 
 router.post('/order', ordersController.createOrder)
+router.get('/order/:id', ordersController.getOrderById)
+router.get('/orders', ordersController.getOrders)
 
 module.exports = router
