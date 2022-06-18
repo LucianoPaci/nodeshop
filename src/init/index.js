@@ -4,10 +4,10 @@ const httpStatus = require('http-status')
 const morgan = require('morgan')
 
 const readConfig = require('./config')
-const winston = require('./logger')
 const routes = require('../routes/v1')
 const ApiError = require('../utils/ApiError')
 const MongoDB = require('./database')
+const { initQueues } = require('./queue')
 
 const config = readConfig()
 
@@ -20,13 +20,14 @@ module.exports = async function init() {
   // parse json request body
   app.use(express.json())
 
-  // Initialize Logger
-  winston()
-
   // Initialize Morgan (HTTP Logs Middleware)
   app.use(morgan('dev'))
 
+  // Initialize DB
   await MongoDB()
+
+  // Initialize Queues
+  initQueues()
 
   // Initialize API
   app.use('/v1', routes)

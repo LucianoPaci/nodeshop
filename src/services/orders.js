@@ -1,8 +1,16 @@
 const Order = require('../models/order')
+const { sendMessageToQueue } = require('../init/queue')
+const logger = require('../init/logger')
 const DEFAULT_LIMIT = 10
 
 const create = async (data) => {
+  try {
+    sendMessageToQueue('orders_queue', data)
+  } catch (error) {
+    throw error
+  }
   const order = await Order.create(data)
+
   return order
 }
 

@@ -42,5 +42,6 @@ module.exports = function readConfig() {
     port: port,
     logger: nconf.get('logger'),
     db_uri: nconf.get('db_uri'),
+    sqs: nconf.get('sqs'),
   }
 }
