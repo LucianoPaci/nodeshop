@@ -5,3 +5,4 @@ sqs:
   region: us-east-1
   orders_queue:
     url: https://sqs.us-east-1.amazonaws.com/520763495267/nodeshop.fifo
+    consumers: 1

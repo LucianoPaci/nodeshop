@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk')
 const logger = require('./logger')
 const readConfig = require('./config')
+const { Consumer } = require('sqs-consumer')
 const get = require('lodash/get')
 const isObject = require('lodash/isObject')
 
@@ -20,6 +21,10 @@ function initQueues() {
   })
 
   // Initialize Consumers TODO
+  const consumersQueueNames = ['orders_queue']
+  consumersQueueNames.forEach((consumerQueueName) => {
+    createQueueConsumer(consumerQueueName, receiveMessage)
+  })
 }
 
 function createQueuePublisher(queueName) {
@@ -76,6 +81,62 @@ function sendMessageToQueue(queueName, messageBody) {
       }
     })
   })
+}
+
+function createQueueConsumer(queueName, handler) {
+  const queueUrl = get(config, `sqs.${queueName}.url`)
+  const sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
+
+  if (!queueInstances.has(queueName)) {
+    queueInstances.set(queueName, sqs)
+  }
+
+  // const consumersAmount = get(config, `sqs.${queuName}.consumers`) || 1
+
+  const consumer = Consumer.create({
+    queueUrl,
+    sqs: queueInstances.get(queueName),
+    handleMessage: async (message) => {
+      try {
+        message.Body = (message.Body && JSON.parse(message.Body)) || {}
+      } catch (error) {
+        error.message = `Invalid JSON on queue ${queueName}'s message`
+        error.queueMessage = message
+        throw error
+      }
+
+      try {
+        await handler(message, queueName)
+      } catch (error) {
+        throw error
+      }
+    },
+  })
+
+  consumer.on('error', (err) => {
+    logger.error(`[SQS ${queueName}] Consumer Error: "${err.name}"`), err
+  })
+  consumer.on('processing_error', (err) => {
+    logger.error(`[SQS ${queueName}] Processing Error: "${err.name}"`), err
+  })
+  consumer.on('message_received', (message) => {
+    logger.debug(`[SQS ${queueName}] Message Received: "${message.MessageId}"`)
+  })
+  consumer.on('message_processed', (message) => {
+    logger.debug(`[SQS ${queueName}] Message Processed: "${message.MessageId}"`)
+  })
+
+  consumer.start()
+  logger.info(`[SQS ${queueName}] Listening queue "${queueUrl}`)
+
+  process.on('exit', () => {
+    logger.info(`[SQS ${queueName}] Stopping queue`)
+    consumer.stop()
+  })
+}
+
+function receiveMessage(message, queueName) {
+  logger.info(`[SQS ${queueName}] - Body: ${JSON.stringify(message.Body)}`)
 }
 
 module.exports = {
