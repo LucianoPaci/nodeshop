@@ -12,63 +12,62 @@ const { initQueues } = require('./queue')
 const config = readConfig()
 
 module.exports = async function init() {
-  const app = express()
+	const app = express()
 
-  // set security HTTP headers
-  app.use(helmet())
+	// set security HTTP headers
+	app.use(helmet())
 
-  // parse json request body
-  app.use(express.json())
+	// parse json request body
+	app.use(express.json())
 
-  // Initialize Morgan (HTTP Logs Middleware)
-  app.use(morgan('dev'))
+	// Initialize Morgan (HTTP Logs Middleware)
+	app.use(morgan('dev'))
 
-  // Initialize DB
-  await MongoDB()
+	// Initialize DB
+	await MongoDB()
 
-  // Initialize Queues
-  initQueues()
+	// Initialize API
+	app.use('/v1', routes)
+	// Initialize Queues
+	initQueues()
 
-  // Initialize API
-  app.use('/v1', routes)
+	// Send Back 404 for any unknown api request
+	app.use((req, res, next) => {
+		next(new ApiError(httpStatus.NOT_FOUND, 'Not Found'))
+	})
 
-  // Send Back 404 for any unknown api request
-  app.use((req, res, next) => {
-    next(new ApiError(httpStatus.NOT_FOUND, 'Not Found'))
-  })
+	const server = app.listen(config.port, () => {
+		console.log(
+			`==============================\n` +
+				`App    : NodeShop\n` +
+				`Port   : ${config.port}\n` +
+				`Env    : ${config.environment}\n` +
+				`==============================`
+		)
+	})
 
-  const server = app.listen(config.port, () => {
-    console.log(
-      `==============================\n` +
-        `App    : NodeShop\n` +
-        `Port   : ${config.port}\n` +
-        `Env    : ${config.environment}\n` +
-        `==============================`
-    )
-  })
+	// Exit Handlers
+	const exitHandler = () => {
+		if (server) {
+			server.close(() => {
+				console.log('Server Closed')
+				process.exit(1)
+			})
+		} else {
+			process.exit(1)
+		}
+	}
 
-  // Exit Handlers
-  const exitHandler = () => {
-    if (server) {
-      server.close(() => {
-        console.log('Server Closed')
-        process.exit(1)
-      })
-    } else {
-      process.exit(1)
-    }
-  }
+	const unexpectedErrorHandler = (error) => {
+		console.error(error)
+		exitHandler()
+	}
 
-  const unexpectedErrorHandler = (error) => {
-    console.error(error)
-    exitHandler()
-  }
+	process.on('unhandledRejection', unexpectedErrorHandler)
+	process.on('uncaughtException', unexpectedErrorHandler)
 
-  process.on('unhandledRejection', unexpectedErrorHandler)
-  process.on('uncaughtException', unexpectedErrorHandler)
-
-  process.on('SIGTERM', () => {
-    console.log('SIGTERM signal received')
-    if (server) server.close()
-  })
+	process.on('SIGTERM', () => {
+		console.log('SIGTERM signal received')
+		if (server) server.close()
+	})
 }
