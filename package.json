@@ -1,34 +1,38 @@
 {
-  "name": "nodeshop_1",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/app.js",
-  "scripts": {
-    "start-orders-svc": "node ./orderssvc/index.js 8081",
-    "start-emails-svc": "node ./emailssvc/index.js",
-    "start": "npm-run-all -p -r start-orders-svc start-emails-svc",
-    "dev": "nodemon src/app.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "aws-sdk": "^2.814.0",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "helmet": "^5.1.0",
-    "http-status": "^1.5.2",
-    "https": "^1.0.0",
-    "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
-    "mongoose": "^6.3.8",
-    "morgan": "^1.10.0",
-    "nconf": "^0.12.0",
-    "nodemailer": "^6.6.1",
-    "npm-run-all": "^4.1.5",
-    "sqs-consumer": "^5.7.0",
-    "winston": "^3.7.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.16"
-  }
+	"name": "nodeshop_1",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/app.js",
+	"scripts": {
+		"start-orders-svc": "node ./orderssvc/index.js 8081",
+		"start-emails-svc": "node ./emailssvc/index.js",
+		"start": "npm-run-all -p -r start-orders-svc start-emails-svc",
+		"dev": "nodemon src/app.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"aws-sdk": "^2.814.0",
+		"body-parser": "^1.19.0",
+		"express": "^4.17.1",
+		"helmet": "^5.1.0",
+		"http-status": "^1.5.2",
+		"https": "^1.0.0",
+		"js-yaml": "^4.1.0",
+		"lodash": "^4.17.21",
+		"mongoose": "^6.3.8",
+		"morgan": "^1.10.0",
+		"nconf": "^0.12.0",
+		"nodemailer": "^6.6.1",
+		"npm-run-all": "^4.1.5",
+		"sqs-consumer": "^5.7.0",
+		"winston": "^3.7.2"
+	},
+	"devDependencies": {
+		"eslint": "^8.18.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-react": "^7.30.0",
+		"nodemon": "^2.0.16",
+		"prettier": "2.7.1"
+	}
 }
