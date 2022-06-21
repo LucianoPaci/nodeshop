@@ -28,7 +28,7 @@ It will merge the configs between your `${environment}.yaml` and `default.yaml`,
   *  *You don't need to add them if you have them configured in your CLI*
 
 
-* You will need to create a queue in AWS SQS. [Here is explained how](https://stackabuse.com/message-queueing-in-node-js-with-aws-sqs/). Get the URL and add it tho the `config/local.yaml`
+* You will need to create a queue in AWS SQS. [Here is explained how](https://stackabuse.com/message-queueing-in-node-js-with-aws-sqs/). Get the URL and add it to the `config/local.yaml`
 
 * You will need to create an account in [Mailtrap](https://mailtrap.io/) to use an Email Sandbox for tests. 
 In there, you should get all the SMTP Settings as described below and add them in the `config/local.yaml`
