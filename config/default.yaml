@@ -1,14 +1,16 @@
 PORT: 3000
 NODE_ENV: development
+LOGGER: debug
 DB_URI: mongodb://localhost:27017
 
 SQS_REGION: us-east-1
 SQS_ACCESS_KEY_ID: <your-access-key-id>
 SQS_SECRET_ACCESS_KEY: <your-secret-access-key>
 SQS_ORDERS_QUEUE_URL: <your-sqs-url>
-SQS_ORDERS_QUEUE_CONSUMERS: consumers: 1
+SQS_ORDERS_QUEUE_CONSUMERS: 1
 
 MAILTRAP_HOST: smtp.mailtrap.io
 MAILTRAP_PORT: 2525
 MAILTRAP_AUTH_USER: <your-user-id>
 MAILTRAP_AUTH_PASS: <your-password>
+
