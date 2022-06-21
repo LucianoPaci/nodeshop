@@ -6,3 +6,6 @@ sqs:
   orders_queue:
     url: https://sqs.us-east-1.amazonaws.com/520763495267/nodeshop.fifo
     consumers: 1
+mailtrap:
+  host: smtp.mailtrap.io
+  port: 2525

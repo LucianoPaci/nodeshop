@@ -5,6 +5,8 @@ const isObject = require('lodash/isObject')
 const get = require('lodash/get')
 const readConfig = require('./config')
 const logger = require('./logger')
+const emailMapper = require('../helpers/emailMapper')
+
 const config = readConfig()
 
 // Configure the region
@@ -14,171 +16,158 @@ AWS.config.update({ region: config.sqs.region })
 const queueInstances = new Map()
 
 function initQueues() {
-	// Initialize Publishers and make them available
-	const publisherQueueNames = ['orders_queue']
-	publisherQueueNames.forEach((publisherQueueName) => {
-		createQueuePublisher(publisherQueueName)
-	})
+  // Initialize Publishers and make them available
+  const publisherQueueNames = ['orders_queue']
+  publisherQueueNames.forEach((publisherQueueName) => {
+    createQueuePublisher(publisherQueueName)
+  })
 
-	// Initialize Consumers TODO
-	const consumersQueueNames = ['orders_queue']
-	consumersQueueNames.forEach((consumerQueueName) => {
-		createQueueConsumer(consumerQueueName, receiveMessage)
-	})
+  // Initialize Consumers TODO
+  const consumersQueueNames = ['orders_queue']
+  consumersQueueNames.forEach((consumerQueueName) => {
+    createQueueConsumer(consumerQueueName, receiveMessage)
+  })
 }
 
 function createQueuePublisher(queueName) {
-	const queueUrl = get(config, `sqs.${queueName}.url`)
-	const sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
+  const queueUrl = get(config, `sqs.${queueName}.url`)
+  const sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
 
-	if (!queueInstances.has(queueName)) {
-		queueInstances.set(queueName, sqs)
-	}
+  if (!queueInstances.has(queueName)) {
+    queueInstances.set(queueName, sqs)
+  }
 
-	logger.info(
-		`[SQS ${queueName}] Connected - Ready to publish in queue ${queueUrl} `
-	)
+  logger.info(
+    `[SQS ${queueName}] Connected - Ready to publish in queue ${queueUrl} `
+  )
 }
 
 function createQueueConsumer(queueName, handler) {
-	const queueUrl = get(config, `sqs.${queueName}.url`)
-	const sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
+  const queueUrl = get(config, `sqs.${queueName}.url`)
+  const sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
 
-	if (!queueInstances.has(queueName)) {
-		queueInstances.set(queueName, sqs)
-	}
+  if (!queueInstances.has(queueName)) {
+    queueInstances.set(queueName, sqs)
+  }
 
-	// const consumersAmount = get(config, `sqs.${queuName}.consumers`) || 1
+  // const consumersAmount = get(config, `sqs.${queuName}.consumers`) || 1
 
-	const consumer = Consumer.create({
-		queueUrl,
-		sqs: queueInstances.get(queueName),
-		handleMessage: async (message) => {
-			try {
-				message.Body = (message.Body && JSON.parse(message.Body)) || {}
-			} catch (error) {
-				error.message = `Invalid JSON on queue ${queueName}'s message`
-				error.queueMessage = message
-				throw error
-			}
+  const consumer = Consumer.create({
+    queueUrl,
+    sqs: queueInstances.get(queueName),
+    handleMessage: async (message) => {
+      try {
+        message.Body = (message.Body && JSON.parse(message.Body)) || {}
+      } catch (error) {
+        error.message = `Invalid JSON on queue ${queueName}'s message`
+        error.queueMessage = message
+        throw error
+      }
 
-			try {
-				await handler(message, queueName)
-			} catch (error) {
-				throw error
-			}
-		},
-	})
+      try {
+        await handler(message, queueName)
+      } catch (error) {
+        throw error
+      }
+    },
+  })
 
-	consumer.on('error', (err) => {
-		logger.error(`[SQS ${queueName}] Consumer Error: "${err.name}"`)
-		console.log(err)
-	})
-	consumer.on('processing_error', (err) => {
-		logger.error(`[SQS ${queueName}] Processing Error: "${err.name}"`)
-		console.log(err)
-	})
-	consumer.on('message_received', (message) => {
-		logger.debug(`[SQS ${queueName}] Message Received: "${message.MessageId}"`)
-	})
-	consumer.on('message_processed', (message) => {
-		logger.debug(`[SQS ${queueName}] Message Processed: "${message.MessageId}"`)
-	})
+  consumer.on('error', (err) => {
+    logger.error(`[SQS ${queueName}] Consumer Error: "${err.name}"`)
+    console.log(err)
+  })
+  consumer.on('processing_error', (err) => {
+    logger.error(`[SQS ${queueName}] Processing Error: "${err.name}"`)
+    console.log(err)
+  })
+  consumer.on('message_received', (message) => {
+    logger.debug(`[SQS ${queueName}] Message Received: "${message.MessageId}"`)
+  })
+  consumer.on('message_processed', (message) => {
+    logger.debug(`[SQS ${queueName}] Message Processed: "${message.MessageId}"`)
+  })
 
-	consumer.start()
-	logger.info(`[SQS ${queueName}] Listening queue "${queueUrl}`)
+  consumer.start()
+  logger.info(`[SQS ${queueName}] Listening queue "${queueUrl}`)
 
-	process.on('exit', () => {
-		logger.info(`[SQS ${queueName}] Stopping queue`)
-		consumer.stop()
-	})
+  process.on('exit', () => {
+    logger.info(`[SQS ${queueName}] Stopping queue`)
+    consumer.stop()
+  })
 }
 
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
 
-const sendMessageToQueue = (queueName, messageBody) => {
-	if (!queueName) {
-		throw new Error('MISSING_PARAMETER', `${queueName} is required`)
-	}
-	if (!isObject(messageBody)) {
-		throw new Error('INVALID_FORMAT', `${messageBody} should be an object`)
-	}
+const sendMessageToQueue = (queueName, messageBody, orderData) => {
+  if (!queueName) {
+    throw new Error('MISSING_PARAMETER', `${queueName} is required`)
+  }
+  if (!isObject(messageBody)) {
+    throw new Error('INVALID_FORMAT', `${messageBody} should be an object`)
+  }
 
-	// Get the instance
-	const sqs = queueInstances.get(queueName)
+  // Get the instance
+  const sqs = queueInstances.get(queueName)
 
-	// Get the URL
-	const queueUrl = get(config, `sqs.${queueName}.url`)
+  // Get the URL
+  const queueUrl = get(config, `sqs.${queueName}.url`)
 
-	// Get the body
-	const messageBodyString = JSON.stringify(messageBody)
+  // Get the body
+  const messageBodyString = JSON.stringify({
+    ...messageBody,
+    orderId: orderData._id,
+  })
 
-	if (!sqs) {
-		throw new Error('There is no SQS configured')
-	}
+  if (!sqs) {
+    throw new Error('There is no SQS configured')
+  }
 
-	const params = {
-		MessageBody: messageBodyString,
-		MessageDeduplicationId: JSON.stringify(messageBody.userEmail),
-		QueueUrl: queueUrl,
-		MessageGroupId: `${queueName}_service`,
-	}
+  const params = {
+    MessageBody: messageBodyString,
+    MessageDeduplicationId: JSON.stringify(messageBody.userEmail),
+    QueueUrl: queueUrl,
+    MessageGroupId: `${queueName}_service`,
+  }
 
-	return new Promise((resolve, reject) => {
-		sqs.sendMessage(params, (err, data) => {
-			if (err) {
-				logger.error(
-					`Error while sending a message to the queue: ${err.message}`
-				)
-				reject()
-			} else {
-				logger.info(`Message sent to the queue: Body: ${messageBodyString}`)
-				resolve()
-			}
-		})
-	})
+  return new Promise((resolve, reject) => {
+    sqs.sendMessage(params, (err, data) => {
+      if (err) {
+        logger.error(
+          `Error while sending a message to the queue: ${err.message}`
+        )
+        reject()
+      } else {
+        logger.info(`Message sent to the queue: Body: ${messageBodyString}`)
+        resolve()
+      }
+    })
+  })
 }
 
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
-const receiveMessage = (message, queueName) => {
-	logger.info(
-		`[SQS ${queueName}] Message Received - Body: ${JSON.stringify(
-			message.Body
-		)}`
-	)
-
-	let transport = nodemailer.createTransport({
-		host: 'smtp.mailtrap.io',
-		port: 2525,
-		auth: {
-			user: '53906d70b9f16b',
-			pass: '4fa3a411c1de92',
-		},
-	})
-
-	let sqsMessage = message.Body
-
-	const emailMessage = {
-		from: 'pepetest@gmail.com',
-		to: sqsMessage.userEmail,
-		subject: `Order Received | NodeShop`,
-		html: `<p>Hi ${sqsMessage.userEmail}.</p. <p>Your order of ${sqsMessage.itemsQuantity} ${sqsMessage.itemName} has been received and is being processed.</p> <p> Thank you for shopping with us! </p>`,
-	}
-
-	transport.sendMail(emailMessage, (err, info) => {
-		if (err) {
-			console.log(`EmailService | ERROR: ${err}`)
-		} else {
-			console.log(`EmailsService | INFO: ${info}`)
-		}
-	})
+const receiveMessage = async (message, queueName) => {
+  const { emailsService } = require('../services') // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
+  logger.info(
+    `[SQS ${queueName}] Message Received - Body: ${JSON.stringify(
+      message.Body
+    )}`
+  )
+  try {
+    const mappedEmail = emailMapper(message.Body)
+    await emailsService.createEmail(mappedEmail)
+    logger.info('-- Email Created in DB --')
+    await emailsService.sendEmail(mappedEmail)
+    logger.info('-- Email Sent to Mailtrap --')
+  } catch (error) {
+    throw error
+  }
 }
 
 module.exports = {
-	queueInstances,
-	initQueues,
-	sendMessageToQueue,
-	receiveMessage,
+  queueInstances,
+  initQueues,
+  sendMessageToQueue,
+  receiveMessage,
 }

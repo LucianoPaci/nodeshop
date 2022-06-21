@@ -3,29 +3,32 @@ const { sendMessageToQueue } = require('../init/queue')
 const constants = require('../utils/constants')
 
 const create = async (data) => {
-	try {
-		sendMessageToQueue('orders_queue', data)
-	} catch (error) {
-		throw error
-	}
-	const order = await Order.create(data)
+  let order
+  try {
+    order = await Order.create(data)
+    if (order) {
+      sendMessageToQueue('orders_queue', data, order)
+    }
+  } catch (error) {
+    throw error
+  }
 
-	return order
+  return order
 }
 
 const getById = async (id) => {
-	const order = await Order.findById(id)
-	return order
+  const order = await Order.findById(id)
+  return order
 }
 
 const getOrders = async (filter, limit = constants.DEFAULT_LIMIT) => {
-	const orders = await Order.find(filter).limit(limit)
+  const orders = await Order.find(filter).limit(limit)
 
-	return orders
+  return orders
 }
 
 module.exports = {
-	create,
-	getById,
-	getOrders,
+  create,
+  getById,
+  getOrders,
 }
