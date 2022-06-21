@@ -8,6 +8,7 @@ sqs:
     consumers: 1
 mailtrap:
   host: smtp.mailtrap.io
-  port: <your-smtp-port>
-  user: <your-user-id>
-  pass: <your-password>
+  port: 2525
+  auth:
+    user: <your-user-id>
+    pass: <your-password>
