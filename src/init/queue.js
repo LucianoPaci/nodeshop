@@ -14,7 +14,6 @@ const sqsConfig = {
   region: get(config, 'sqs.region'),
   apiVersion: '2012-11-05',
 }
-console.log('🚀 ~ file: queue.js ~ line 17 ~ sqsConfig', sqsConfig)
 
 // Queue Instances
 const queueInstances = new Map()
@@ -49,10 +48,6 @@ function createQueuePublisher(queueName) {
 function createQueueConsumer(queueName, handler) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
   const sqs = new AWS.SQS(sqsConfig)
-  console.log(
-    '🚀 ~ file: queue.js ~ line 51 ~ createQueueConsumer ~ sqsConfig',
-    sqsConfig
-  )
 
   if (!queueInstances.has(queueName)) {
     queueInstances.set(queueName, sqs)
