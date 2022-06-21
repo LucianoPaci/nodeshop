@@ -10,7 +10,6 @@ const MongoDB = require('./database')
 const { initQueues } = require('./queue')
 
 const config = readConfig()
-console.log('🚀 ~ file: index.js ~ line 13 ~ config', config)
 
 module.exports = async function init() {
   const app = express()
