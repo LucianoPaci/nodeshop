@@ -1,1 +1,1 @@
-env: staging
+NODE_ENV: staging
