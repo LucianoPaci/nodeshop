@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk')
-const nodemailer = require('nodemailer')
 const { Consumer } = require('sqs-consumer')
 const isObject = require('lodash/isObject')
 const get = require('lodash/get')
@@ -9,8 +8,12 @@ const emailMapper = require('../helpers/emailMapper')
 
 const config = readConfig()
 
-// Configure the region
-AWS.config.update({ region: config.sqs.region })
+const sqsConfig = {
+  accessKeyId: get(config, `sqs.accessKeyId`),
+  secretAccessKey: get(config, `sqs.secretAccessKey`),
+  region: get(config, `sqs.region`),
+  apiVersion: '2012-11-05',
+}
 
 // Queue Instances
 const queueInstances = new Map()
@@ -31,7 +34,7 @@ function initQueues() {
 
 function createQueuePublisher(queueName) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
-  const sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
+  const sqs = new AWS.SQS(sqsConfig)
 
   if (!queueInstances.has(queueName)) {
     queueInstances.set(queueName, sqs)
@@ -44,7 +47,7 @@ function createQueuePublisher(queueName) {
 
 function createQueueConsumer(queueName, handler) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
-  const sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
+  const sqs = new AWS.SQS(sqsConfig)
 
   if (!queueInstances.has(queueName)) {
     queueInstances.set(queueName, sqs)

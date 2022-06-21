@@ -3,6 +3,8 @@ env: development
 db_uri: mongodb://localhost:27017
 sqs:
   region: us-east-1
+  accessKeyId: <your-access-key-id>
+  secretAccessKey: <your-secret-access-key>
   orders_queue:
     url: <your-sqs-url>
     consumers: 1
