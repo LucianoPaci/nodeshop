@@ -1,11 +1,11 @@
-const { dump, load } = require('js-yaml')
-const { accessSync } = require('fs')
-const { join } = require('path')
-const nconf = require('nconf')
+import { dump, load } from 'js-yaml'
+import { accessSync } from 'fs'
+import { join } from 'path'
+import nconf from 'nconf'
 
 const configRoot = 'config'
 
-module.exports = function readConfig() {
+export default function readConfig() {
   const defaultConfigPath = join(configRoot, 'default.yaml')
   try {
     accessSync(defaultConfigPath)
