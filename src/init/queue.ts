@@ -1,10 +1,17 @@
-const AWS = require('aws-sdk')
-const { Consumer } = require('sqs-consumer')
-const isObject = require('lodash/isObject')
-const get = require('lodash/get')
+import * as AWS from 'aws-sdk'
+import { Consumer } from 'sqs-consumer'
+import isObject from 'lodash/isObject'
+import get from 'lodash/get'
 const emailMapper = require('../helpers/emailMapper')
 import readConfig from './config'
 import logger from './logger'
+
+interface IOrderBody {
+  userEmail: string
+  itemName: string,
+  itemPrice: string,
+  itemsQuantity: number
+}
 
 const config = readConfig()
 const sqsConfig = {
@@ -20,18 +27,18 @@ const queueInstances = new Map()
 function initQueues() {
   // Initialize Publishers and make them available
   const publisherQueueNames = ['orders_queue']
-  publisherQueueNames.forEach((publisherQueueName) => {
+  publisherQueueNames.forEach((publisherQueueName: string) => {
     createQueuePublisher(publisherQueueName)
   })
 
   // Initialize Consumers TODO
   const consumersQueueNames = ['orders_queue']
-  consumersQueueNames.forEach((consumerQueueName) => {
+  consumersQueueNames.forEach((consumerQueueName: string) => {
     createQueueConsumer(consumerQueueName, receiveMessage)
   })
 }
 
-function createQueuePublisher(queueName) {
+function createQueuePublisher(queueName: string) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
   const sqs = new AWS.SQS(sqsConfig)
 
@@ -44,7 +51,8 @@ function createQueuePublisher(queueName) {
   )
 }
 
-function createQueueConsumer(queueName, handler) {
+// Improve Handler type
+function createQueueConsumer(queueName: string, handler: any) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
   const sqs = new AWS.SQS(sqsConfig)
 
@@ -101,12 +109,13 @@ function createQueueConsumer(queueName, handler) {
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
 
-const sendMessageToQueue = (queueName, messageBody, orderData) => {
+// Improve parameters types
+const sendMessageToQueue = (queueName: string, messageBody: IOrderBody, orderData: any) => {
   if (!queueName) {
-    throw new Error('MISSING_PARAMETER', `${queueName} is required`)
+    throw new Error(`MISSING_PARAMETER: ${queueName} is required`)
   }
   if (!isObject(messageBody)) {
-    throw new Error('INVALID_FORMAT', `${messageBody} should be an object`)
+    throw new Error(`INVALID_FORMAT: ${messageBody} should be an object`)
   }
 
   // Get the instance
@@ -132,8 +141,8 @@ const sendMessageToQueue = (queueName, messageBody, orderData) => {
     MessageGroupId: `${queueName}_service`,
   }
 
-  return new Promise((resolve, reject) => {
-    sqs.sendMessage(params, (err, data) => {
+  return new Promise<void>((resolve, reject) => {
+    sqs.sendMessage(params, (err:any, data:any) => {
       if (err) {
         logger.error(
           `Error while sending a message to the queue: ${err.message}`
@@ -149,7 +158,7 @@ const sendMessageToQueue = (queueName, messageBody, orderData) => {
 
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
-const receiveMessage = async (message, queueName) => {
+const receiveMessage = async (message:any, queueName:string) => {
   const { emailsService } = require('../services') // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
   logger.info(
     `[SQS ${queueName}] Message Received - Body: ${JSON.stringify(
@@ -167,7 +176,7 @@ const receiveMessage = async (message, queueName) => {
   }
 }
 
-module.exports = {
+export {
   queueInstances,
   initQueues,
   sendMessageToQueue,

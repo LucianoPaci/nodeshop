@@ -7,7 +7,7 @@ import readConfig from './config'
 const routes = require('../routes/v1')
 const ApiError = require('../utils/ApiError')
 import MongoDB from './database'
-const { initQueues } = require('./queue')
+import { initQueues } from './queue'
 
 const config = readConfig()
 
