@@ -1,9 +1,9 @@
 const nodemailer = require('nodemailer')
 const get = require('lodash/get')
 const Email = require('../models/email')
-const readConfig = require('../init/config')
-const logger = require('../init/logger')
 const emailMapper = require('../helpers/emailMapper')
+import readConfig from '../init/config'
+import logger from '../init/logger'
 
 const config = readConfig()
 

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
-const readConfig = require('./config')
-const logger = require('./logger')
+import mongoose from 'mongoose'
+import readConfig from './config'
+import logger from './logger'
 
 const config = readConfig()
 
@@ -21,7 +21,7 @@ mongoose.connection.on('error', (err) => {
   process.exit(1)
 })
 
-module.exports = async function () {
+export default async function () {
   try {
     await mongoose.connect(config.db_uri)
     logger.info(`Connected to DB: ${mongoose.connection.name}`)

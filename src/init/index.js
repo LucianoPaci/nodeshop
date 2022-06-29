@@ -3,15 +3,15 @@ const helmet = require('helmet')
 const httpStatus = require('http-status')
 const morgan = require('morgan')
 
-const readConfig = require('./config')
+import readConfig from './config'
 const routes = require('../routes/v1')
 const ApiError = require('../utils/ApiError')
-const MongoDB = require('./database')
+import MongoDB from './database'
 const { initQueues } = require('./queue')
 
 const config = readConfig()
 
-module.exports = async function init() {
+export default async function init() {
   const app = express()
 
   // set security HTTP headers

@@ -2,12 +2,11 @@ const AWS = require('aws-sdk')
 const { Consumer } = require('sqs-consumer')
 const isObject = require('lodash/isObject')
 const get = require('lodash/get')
-const readConfig = require('./config')
-const logger = require('./logger')
 const emailMapper = require('../helpers/emailMapper')
+import readConfig from './config'
+import logger from './logger'
 
 const config = readConfig()
-
 const sqsConfig = {
   accessKeyId: get(config, 'sqs.accessKeyId'),
   secretAccessKey: get(config, 'sqs.secretAccessKey'),
