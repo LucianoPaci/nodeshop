@@ -1,6 +1,6 @@
 const Order = require('../models/order')
 const { sendMessageToQueue } = require('../init/queue')
-const constants = require('../utils/constants')
+import constants from '../utils/constants'
 
 const create = async (data) => {
   let order
