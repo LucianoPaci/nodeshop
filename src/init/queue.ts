@@ -6,6 +6,7 @@ import emailMapper  from '../helpers/emailMapper'
 import readConfig from './config'
 import logger from './logger'
 import { OrderFields, Order } from '../models/order'
+import { emailsService } from '../services' // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
 
 const config = readConfig()
 const sqsConfig = {
@@ -160,7 +161,7 @@ const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderDa
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
 const receiveMessage = async (message:any, queueName:string) => {
-  const { emailsService } = require('../services') // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
+  
   logger.info(
     `[SQS ${queueName}] Message Received - Body: ${JSON.stringify(
       message.Body
