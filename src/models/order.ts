@@ -1,11 +1,11 @@
-import mongoose, { Model, Schema, Types } from 'mongoose'
+import mongoose, { Model, Schema } from 'mongoose'
 import { BaseDocument } from './base'
 
 export interface OrderFields {
   userEmail: string
   itemName: string
   itemPrice: string //https://husobee.github.io/money/float/2016/09/23/never-use-floats-for-currency.html
-  itemsQuantity: number 
+  itemsQuantity: number
 }
 
 const schema = new Schema(

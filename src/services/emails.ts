@@ -1,7 +1,6 @@
-import nodemailer  from 'nodemailer'
-import get  from 'lodash/get'
-import {EmailFields, EmailWithOrder, model as Email} from '../models/email'
-import emailMapper from '../helpers/emailMapper'
+import nodemailer from 'nodemailer'
+import get from 'lodash/get'
+import { EmailFields, EmailWithOrder, model as Email } from '../models/email'
 import readConfig from '../init/config'
 import logger from '../init/logger'
 
@@ -12,12 +11,14 @@ const findEmails = async (filter: any, limit: number | string) => {
   return Email.find(filter).limit(parsedLimit)
 }
 
-const createEmail = async (body: EmailFields | EmailWithOrder): Promise<EmailWithOrder> => {
+const createEmail = async (
+  body: EmailFields | EmailWithOrder
+): Promise<EmailWithOrder> => {
   return Email.create(body)
 }
 
 const sendEmail = async (body: EmailWithOrder) => {
-  let transport = nodemailer.createTransport({
+  const transport = nodemailer.createTransport({
     host: get(config, 'mailtrap.host'),
     port: get(config, 'mailtrap.port'),
     auth: {
@@ -36,8 +37,4 @@ const sendEmail = async (body: EmailWithOrder) => {
   }
 }
 
-export {
-  findEmails,
-  createEmail,
-  sendEmail,
-}
+export { findEmails, createEmail, sendEmail }

@@ -1,11 +1,15 @@
 {
     "env": {
         "browser": true,
+        "node": true,
         "commonjs": true,
         "es2021": true
     },
+    "parser": "@typescript-eslint/parser",
     "extends": [
         "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:react/recommended",
         "prettier"
     ],
@@ -16,24 +20,17 @@
         "ecmaVersion": "latest"
     },
     "plugins": [
+        "@typescript-eslint",
         "react"
     ],
     "rules": {
-        "indent": [
-            "error",
-            "space"
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
+        "no-useless-catch": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "quotes": [
             "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
+            "single",
+            {"allowTemplateLiterals" : true }
         ]
     }
 }

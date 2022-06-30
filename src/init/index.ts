@@ -1,5 +1,6 @@
+/* eslint-disable quotes */
 
-import  express, {Request, Response, NextFunction} from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import helmet from 'helmet'
 import httpStatus from 'http-status'
 import morgan from 'morgan'
@@ -33,7 +34,7 @@ export default async function init() {
   initQueues()
 
   // Send Back 404 for any unknown api request
-  app.use((req: Request, res:Response, next: NextFunction) => {
+  app.use((req: Request, res: Response, next: NextFunction) => {
     next(new ApiError(httpStatus.NOT_FOUND, 'Not Found'))
   })
 

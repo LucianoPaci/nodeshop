@@ -2,12 +2,13 @@ import * as AWS from 'aws-sdk'
 import { Consumer } from 'sqs-consumer'
 import isObject from 'lodash/isObject'
 import get from 'lodash/get'
-import emailMapper  from '../helpers/emailMapper'
+import emailMapper from '../helpers/emailMapper'
 import readConfig from './config'
 import logger from './logger'
 import { OrderFields, Order } from '../models/order'
 import { emailsService } from '../services' // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
 
+type SQSHandler = (message: AWS.SQS.Message, queueName: string) => Promise<void>
 const config = readConfig()
 const sqsConfig = {
   accessKeyId: get(config, 'sqs.accessKeyId'),
@@ -47,7 +48,7 @@ function createQueuePublisher(queueName: string) {
 }
 
 // Improve Handler type
-function createQueueConsumer(queueName: string, handler: any) {
+function createQueueConsumer(queueName: string, handler: SQSHandler) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
   const sqs = new AWS.SQS(sqsConfig)
 
@@ -105,7 +106,11 @@ function createQueueConsumer(queueName: string, handler: any) {
 // obtain the functions on runtime
 
 // Improve parameters types
-const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderData: Order): Promise<void> => {
+const sendMessageToQueue = (
+  queueName: string,
+  messageBody: OrderFields,
+  orderData: Order
+): Promise<void> => {
   if (!queueName) {
     throw new Error(`MISSING_PARAMETER: ${queueName} is required`)
   }
@@ -129,14 +134,14 @@ const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderDa
     throw new Error('There is no SQS configured')
   }
 
-  interface SQSMessage  {
+  interface SQSMessage {
     MessageDeduplicationId: string
     QueueUrl: string
     MessageGroupId: string
     MessageBody: string
   }
 
-  const params: SQSMessage= {
+  const params: SQSMessage = {
     MessageBody: messageBodyString,
     MessageDeduplicationId: JSON.stringify(messageBody.userEmail),
     QueueUrl: queueUrl,
@@ -144,7 +149,7 @@ const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderDa
   }
 
   return new Promise<void>((resolve, reject) => {
-    sqs.sendMessage(params, (err:any, data:any) => {
+    sqs.sendMessage(params, (err: any) => {
       if (err) {
         logger.error(
           `Error while sending a message to the queue: ${err.message}`
@@ -160,15 +165,13 @@ const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderDa
 
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
-const receiveMessage = async (message:any, queueName:string) => {
-  
+const receiveMessage = async (message: any, queueName: string) => {
   logger.info(
     `[SQS ${queueName}] Message Received - Body: ${JSON.stringify(
       message.Body
     )}`
   )
   try {
-    console.log("🚀 ~ file: queue.ts ~ line 171 ~ receiveMessage ~ message.Body", message.Body)
     const mappedEmail = emailMapper(message.Body)
     await emailsService.createEmail(mappedEmail)
     logger.info('-- Email Created in DB --')
@@ -179,9 +182,4 @@ const receiveMessage = async (message:any, queueName:string) => {
   }
 }
 
-export {
-  queueInstances,
-  initQueues,
-  sendMessageToQueue,
-  receiveMessage,
-}
+export { queueInstances, initQueues, sendMessageToQueue, receiveMessage }
