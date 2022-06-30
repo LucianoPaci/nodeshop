@@ -2,10 +2,10 @@ import * as AWS from 'aws-sdk'
 import { Consumer } from 'sqs-consumer'
 import isObject from 'lodash/isObject'
 import get from 'lodash/get'
-const emailMapper = require('../helpers/emailMapper')
+import emailMapper  from '../helpers/emailMapper'
 import readConfig from './config'
 import logger from './logger'
-import { OrderFields } from '../models/order'
+import { OrderFields, Order } from '../models/order'
 
 const config = readConfig()
 const sqsConfig = {
@@ -104,7 +104,7 @@ function createQueueConsumer(queueName: string, handler: any) {
 // obtain the functions on runtime
 
 // Improve parameters types
-const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderData: any): Promise<void> => {
+const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderData: Order): Promise<void> => {
   if (!queueName) {
     throw new Error(`MISSING_PARAMETER: ${queueName} is required`)
   }
@@ -128,7 +128,14 @@ const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderDa
     throw new Error('There is no SQS configured')
   }
 
-  const params = {
+  interface SQSMessage  {
+    MessageDeduplicationId: string
+    QueueUrl: string
+    MessageGroupId: string
+    MessageBody: string
+  }
+
+  const params: SQSMessage= {
     MessageBody: messageBodyString,
     MessageDeduplicationId: JSON.stringify(messageBody.userEmail),
     QueueUrl: queueUrl,
@@ -160,6 +167,7 @@ const receiveMessage = async (message:any, queueName:string) => {
     )}`
   )
   try {
+    console.log("🚀 ~ file: queue.ts ~ line 171 ~ receiveMessage ~ message.Body", message.Body)
     const mappedEmail = emailMapper(message.Body)
     await emailsService.createEmail(mappedEmail)
     logger.info('-- Email Created in DB --')
