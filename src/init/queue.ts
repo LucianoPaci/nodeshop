@@ -5,13 +5,7 @@ import get from 'lodash/get'
 const emailMapper = require('../helpers/emailMapper')
 import readConfig from './config'
 import logger from './logger'
-
-interface IOrderBody {
-  userEmail: string
-  itemName: string,
-  itemPrice: string,
-  itemsQuantity: number
-}
+import { OrderFields } from '../models/order'
 
 const config = readConfig()
 const sqsConfig = {
@@ -110,7 +104,7 @@ function createQueueConsumer(queueName: string, handler: any) {
 // obtain the functions on runtime
 
 // Improve parameters types
-const sendMessageToQueue = (queueName: string, messageBody: IOrderBody, orderData: any) => {
+const sendMessageToQueue = (queueName: string, messageBody: OrderFields, orderData: any): Promise<void> => {
   if (!queueName) {
     throw new Error(`MISSING_PARAMETER: ${queueName} is required`)
   }

@@ -1,6 +1,14 @@
-const mongoose = require('mongoose')
+import mongoose, { Model, Schema, Types } from 'mongoose'
+import { BaseDocument } from './base'
 
-const orderSchema = new mongoose.Schema(
+export interface OrderFields {
+  userEmail: string
+  itemName: string
+  itemPrice: string
+  itemsQuantity: number 
+}
+
+const schema = new Schema(
   {
     userEmail: {
       type: String,
@@ -31,5 +39,6 @@ const orderSchema = new mongoose.Schema(
     collection: 'orders',
   }
 )
+export type Order = OrderFields & BaseDocument
 
-module.exports = mongoose.model('order', orderSchema)
+export const model = mongoose.model('order', schema) as Model<Order>

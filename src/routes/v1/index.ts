@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express'
-import ordersController from '../../controllers/orders'
-import emailsController from '../../controllers/emails'
+import {ordersController, emailsController} from '../../controllers'
 
 const router = express.Router()
 
