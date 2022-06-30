@@ -1,17 +1,19 @@
-const express = require('express')
-const helmet = require('helmet')
-const httpStatus = require('http-status')
-const morgan = require('morgan')
+/* eslint-disable quotes */
 
-const readConfig = require('./config')
-const routes = require('../routes/v1')
-const ApiError = require('../utils/ApiError')
-const MongoDB = require('./database')
-const { initQueues } = require('./queue')
+import express, { Request, Response, NextFunction } from 'express'
+import helmet from 'helmet'
+import httpStatus from 'http-status'
+import morgan from 'morgan'
+
+import readConfig from './config'
+import routes from '../routes/v1'
+import ApiError from '../utils/ApiError'
+import MongoDB from './database'
+import { initQueues } from './queue'
 
 const config = readConfig()
 
-module.exports = async function init() {
+export default async function init() {
   const app = express()
 
   // set security HTTP headers
@@ -32,7 +34,7 @@ module.exports = async function init() {
   initQueues()
 
   // Send Back 404 for any unknown api request
-  app.use((req, res, next) => {
+  app.use((req: Request, res: Response, next: NextFunction) => {
     next(new ApiError(httpStatus.NOT_FOUND, 'Not Found'))
   })
 
@@ -58,7 +60,7 @@ module.exports = async function init() {
     }
   }
 
-  const unexpectedErrorHandler = (error) => {
+  const unexpectedErrorHandler = (error: any) => {
     console.error(error)
     exitHandler()
   }

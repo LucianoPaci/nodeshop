@@ -1,13 +1,15 @@
-const AWS = require('aws-sdk')
-const { Consumer } = require('sqs-consumer')
-const isObject = require('lodash/isObject')
-const get = require('lodash/get')
-const readConfig = require('./config')
-const logger = require('./logger')
-const emailMapper = require('../helpers/emailMapper')
+import * as AWS from 'aws-sdk'
+import { Consumer } from 'sqs-consumer'
+import isObject from 'lodash/isObject'
+import get from 'lodash/get'
+import emailMapper from '../helpers/emailMapper'
+import readConfig from './config'
+import logger from './logger'
+import { OrderFields, Order } from '../models/order'
+import { emailsService } from '../services' // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
 
+type SQSHandler = (message: AWS.SQS.Message, queueName: string) => Promise<void>
 const config = readConfig()
-
 const sqsConfig = {
   accessKeyId: get(config, 'sqs.accessKeyId'),
   secretAccessKey: get(config, 'sqs.secretAccessKey'),
@@ -21,18 +23,18 @@ const queueInstances = new Map()
 function initQueues() {
   // Initialize Publishers and make them available
   const publisherQueueNames = ['orders_queue']
-  publisherQueueNames.forEach((publisherQueueName) => {
+  publisherQueueNames.forEach((publisherQueueName: string) => {
     createQueuePublisher(publisherQueueName)
   })
 
   // Initialize Consumers TODO
   const consumersQueueNames = ['orders_queue']
-  consumersQueueNames.forEach((consumerQueueName) => {
+  consumersQueueNames.forEach((consumerQueueName: string) => {
     createQueueConsumer(consumerQueueName, receiveMessage)
   })
 }
 
-function createQueuePublisher(queueName) {
+function createQueuePublisher(queueName: string) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
   const sqs = new AWS.SQS(sqsConfig)
 
@@ -45,7 +47,8 @@ function createQueuePublisher(queueName) {
   )
 }
 
-function createQueueConsumer(queueName, handler) {
+// Improve Handler type
+function createQueueConsumer(queueName: string, handler: SQSHandler) {
   const queueUrl = get(config, `sqs.${queueName}.url`)
   const sqs = new AWS.SQS(sqsConfig)
 
@@ -102,12 +105,17 @@ function createQueueConsumer(queueName, handler) {
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
 
-const sendMessageToQueue = (queueName, messageBody, orderData) => {
+// Improve parameters types
+const sendMessageToQueue = (
+  queueName: string,
+  messageBody: OrderFields,
+  orderData: Order
+): Promise<void> => {
   if (!queueName) {
-    throw new Error('MISSING_PARAMETER', `${queueName} is required`)
+    throw new Error(`MISSING_PARAMETER: ${queueName} is required`)
   }
   if (!isObject(messageBody)) {
-    throw new Error('INVALID_FORMAT', `${messageBody} should be an object`)
+    throw new Error(`INVALID_FORMAT: ${messageBody} should be an object`)
   }
 
   // Get the instance
@@ -126,15 +134,22 @@ const sendMessageToQueue = (queueName, messageBody, orderData) => {
     throw new Error('There is no SQS configured')
   }
 
-  const params = {
+  interface SQSMessage {
+    MessageDeduplicationId: string
+    QueueUrl: string
+    MessageGroupId: string
+    MessageBody: string
+  }
+
+  const params: SQSMessage = {
     MessageBody: messageBodyString,
     MessageDeduplicationId: JSON.stringify(messageBody.userEmail),
     QueueUrl: queueUrl,
     MessageGroupId: `${queueName}_service`,
   }
 
-  return new Promise((resolve, reject) => {
-    sqs.sendMessage(params, (err, data) => {
+  return new Promise<void>((resolve, reject) => {
+    sqs.sendMessage(params, (err: any) => {
       if (err) {
         logger.error(
           `Error while sending a message to the queue: ${err.message}`
@@ -150,8 +165,7 @@ const sendMessageToQueue = (queueName, messageBody, orderData) => {
 
 // NOTE: I tried to move this function to a different file, but for some reason, I couldnt get to
 // obtain the functions on runtime
-const receiveMessage = async (message, queueName) => {
-  const { emailsService } = require('../services') // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
+const receiveMessage = async (message: any, queueName: string) => {
   logger.info(
     `[SQS ${queueName}] Message Received - Body: ${JSON.stringify(
       message.Body
@@ -168,9 +182,4 @@ const receiveMessage = async (message, queueName) => {
   }
 }
 
-module.exports = {
-  queueInstances,
-  initQueues,
-  sendMessageToQueue,
-  receiveMessage,
-}
+export { queueInstances, initQueues, sendMessageToQueue, receiveMessage }

@@ -2,6 +2,9 @@
 
 *.log
 
+# TS Build
+/build
+
 # Local File
 
 config/local.yaml

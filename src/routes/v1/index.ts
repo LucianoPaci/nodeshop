@@ -1,10 +1,9 @@
-const express = require('express')
-const ordersController = require('../../controllers/orders')
-const emailsController = require('../../controllers/emails')
+import express, { Request, Response } from 'express'
+import {ordersController, emailsController} from '../../controllers'
 
 const router = express.Router()
 
-router.get('/status', (req, res) => {
+router.get('/status', (req: Request, res: Response) => {
   res.status(200).send('OK')
 })
 
@@ -21,4 +20,4 @@ router.get('/orders', ordersController.getOrders)
 router.post('/email/:orderId', emailsController.createEmail)
 router.get('/emails', emailsController.getEmails)
 
-module.exports = router
+export default router
