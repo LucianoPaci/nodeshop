@@ -40,7 +40,4 @@ const createEmail = async (req: Request, res: Response) => {
   res.send(email)
 }
 
-export {
-  getEmails,
-  createEmail,
-}
+export { getEmails, createEmail }

@@ -3,13 +3,12 @@
  * we always use ObjectId in our documents.
  */
 
- import { Document, Types } from 'mongoose'
+import { Document, Types } from 'mongoose'
 
- export interface BaseDocument extends Document {
-   _id: Types.ObjectId
- }
- 
- export interface BaseLeanDocument {
-   _id: Types.ObjectId
- }
- 
+export interface BaseDocument extends Document {
+  _id: Types.ObjectId
+}
+
+export interface BaseLeanDocument {
+  _id: Types.ObjectId
+}

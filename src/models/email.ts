@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema, Types} from 'mongoose'
+import mongoose, { Model, Schema, Types } from 'mongoose'
 import { BaseDocument } from './base'
 
 export interface EmailFields {
