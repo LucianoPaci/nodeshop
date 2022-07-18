@@ -1,0 +1,15 @@
+{
+  "env": {
+    "mocha": true,
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "sourceType": "script",
+    "ecmaVersion": 8
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    "func-names": ["error", "never"]
+  }
+}

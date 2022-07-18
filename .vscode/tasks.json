@@ -1,0 +1,18 @@
+
+  {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "runCurrentTest",
+        "type": "shell",
+        "command": "NODE_ENV=test ./node_modules/.bin/mocha --config=${src/test/unit/setup.spec.ts} --spec=${relativeFile}",
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "dedicated"
+        }
+      },
+    ]
+  }

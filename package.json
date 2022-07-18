@@ -14,7 +14,8 @@
     "lint": "eslint src/**/*.ts && prettier --write ./src/**/*.ts",
     "watch": "npm-run-all build:clean -p watch:*",
     "watch:build": "npm run build -- --watch",
-    "watch:nodemon": "wait-on build/app.js && nodemon build/app.js --watch build --watch config --ext js,json,yaml"
+    "watch:nodemon": "wait-on build/app.js && nodemon build/app.js --watch build --watch config --ext js,json,yaml",
+    "test": "mocha"
   },
   "author": "Luciano Paci",
   "license": "ISC",
@@ -35,9 +36,11 @@
     "winston": "^3.7.2"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.1",
     "@types/express": "^4.17.13",
     "@types/js-yaml": "^4.0.5",
     "@types/lodash": "^4.14.182",
+    "@types/mocha": "^9.1.1",
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.3",
     "@types/nconf": "^0.10.2",
@@ -45,11 +48,14 @@
     "@types/nodemailer": "^6.4.4",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
+    "chai": "^4.3.6",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.30.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
+    "mocha": "^10.0.0",
+    "mongodb-memory-server": "^8.7.2",
     "nodemon": "^2.0.16",
     "npm": "^8.13.1",
     "npm-run-all": "^4.1.5",
