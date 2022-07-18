@@ -12,10 +12,6 @@ describe('Failing Operations', () => {
     try {
       await order.save()
     } catch (error) {
-      console.log(
-        '🚀 ~ file: order.spec.ts ~ line 22 ~ it ~ error',
-        error.message
-      )
       expect(error).to.be.an.instanceof(mongoose.Error.ValidationError)
     }
   })
@@ -51,8 +47,6 @@ describe('Successful Operations', () => {
     const orderInDB: Order | null = await OrderModel.findOne({
       userEmail: 'pepito@zenvia.com',
     }).exec()
-    console.log('Order Document found in memory-db', orderInDB)
-
     expect(orderInDB?.userEmail).to.be.eq(order.userEmail)
   })
 })

@@ -1,0 +1,12 @@
+[
+  {
+    "key": "shift+cmd+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "runCurrentTest"
+  },
+  {
+    "key": "shift+cmd+b",
+    "command": "workbench.action.tasks.runTask",
+    "args": "build"
+  }
+]
