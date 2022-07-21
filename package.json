@@ -5,7 +5,7 @@
     "lerna": "^5.1.8"
   },
   "scripts": {
-    "local": "lerna run local --stream",
+    "local": "lerna run local --stream --parallel",
     "build": "lerna build"
   },
   "workspaces": [

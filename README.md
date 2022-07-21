@@ -5,7 +5,7 @@ Project that simulates Orders and Emails from a business or shop.
 It allows to create orders via API that are sent to a queue so they can be consumed later to create emails and send them to a dummy inbox.
 
 ###  What is used?
-* Node.js
+* Typescript
 * Express
 * AWS SQS
 * Mongo
