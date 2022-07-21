@@ -2,10 +2,10 @@ import * as AWS from 'aws-sdk'
 import { Consumer } from 'sqs-consumer'
 import isObject from 'lodash/isObject'
 import get from 'lodash/get'
+import { OrderFields, Order } from '@nodeshop/types'
 import emailMapper from '../helpers/emailMapper'
 import readConfig from './config'
 import logger from './logger'
-import { OrderFields, Order } from '../models/order'
 import { emailsService } from '../services' // HOISTING https://developer.mozilla.org/es/docs/Glossary/Hoisting
 
 type SQSHandler = (message: AWS.SQS.Message, queueName: string) => Promise<void>

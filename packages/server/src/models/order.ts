@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose'
-import { BaseDocument, OrderFields } from '@nodeshop/types'
 
 const schema = new Schema(
   {
@@ -33,6 +32,5 @@ const schema = new Schema(
     collection: 'orders',
   }
 )
-export type Order = OrderFields & BaseDocument
 
 export const model = mongoose.model('order', schema)

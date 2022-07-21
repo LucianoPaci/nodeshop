@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { OrderFields } from '../models/order'
+import { OrderFields } from '@nodeshop/types'
 import { ordersService } from '../services'
 
 export interface IOrdersFilter {

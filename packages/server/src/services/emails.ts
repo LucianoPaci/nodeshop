@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 import get from 'lodash/get'
-import { EmailFields, EmailWithOrder, model as Email } from '../models/email'
+import { EmailFields, EmailWithOrder } from '@nodeshop/types'
+import { model as Email } from '../models/email'
 import readConfig from '../init/config'
 import logger from '../init/logger'
 

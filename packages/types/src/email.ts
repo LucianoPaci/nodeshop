@@ -12,4 +12,9 @@ export interface EmailWithOrder extends EmailFields {
   orderId: string | Types.ObjectId;
 }
 
+export interface IEmailsFilter {
+  from?: string;
+  to?: string;
+}
+
 export type Email = EmailWithOrder & BaseDocument;

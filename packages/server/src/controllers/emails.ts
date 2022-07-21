@@ -1,10 +1,6 @@
 import { Request, Response } from 'express'
+import { IEmailsFilter } from '@nodeshop/types'
 import { ordersService, emailsService } from '../services'
-
-export interface IEmailsFilter {
-  from?: string
-  to?: string
-}
 
 const getEmails = async (req: Request, res: Response) => {
   const { from, to } = req.query

@@ -1,16 +1,4 @@
-import mongoose, { Schema, Types } from 'mongoose'
-import { BaseDocument } from '@nodeshop/types'
-
-export interface EmailFields {
-  from: string
-  to: string
-  subject?: string
-  html: string
-}
-
-export interface EmailWithOrder extends EmailFields {
-  orderId: string | Types.ObjectId
-}
+import mongoose, { Schema } from 'mongoose'
 
 const emailSchema = new Schema(
   {
@@ -48,7 +36,5 @@ const emailSchema = new Schema(
     collection: 'emails',
   }
 )
-
-export type Email = EmailWithOrder & BaseDocument
 
 export const model = mongoose.model('email', emailSchema)
