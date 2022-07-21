@@ -56,6 +56,9 @@ npm run dev
 https://documenter.getpostman.com/view/2992116/UzBnpmNY
 
 
+## FrontEnd App
+Project created with https://createapp.dev/webpack/react--babel--chai--cleanwebpackplugin--copywebpackplugin--css--mocha--postcss--react-hot-loader--tailwind-css--typescript
+
 ---- 
 Based of: AWS-SQS Tutorial
 
