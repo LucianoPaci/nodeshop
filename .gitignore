@@ -8,3 +8,5 @@
 # Local File
 
 config/local.yaml
+
+.DS_Store
