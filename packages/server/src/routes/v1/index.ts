@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express'
-import {ordersController, emailsController} from '../../controllers'
+import { ordersController, emailsController } from '../../controllers'
 
 const router = express.Router()
 
 router.get('/status', (req: Request, res: Response) => {
-  res.status(200).send('OK')
+  res.status(200).send('OK!!')
 })
 
 /**

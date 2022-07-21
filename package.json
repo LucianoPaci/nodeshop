@@ -1,73 +1,14 @@
 {
   "name": "nodeshop",
-  "version": "3.0.0",
-  "description": "",
-  "main": "build/app.js",
-  "scripts": {
-    "build": "npm-run-all \"build:tsc -- {@}\" --",
-    "build:tsc": "npm run lint && tsc",
-    "build:clean": "rm -rf build",
-    "prestart": "npm run build",
-    "start": "node build/app.js",
-    "dev": "nodemon build/app.js",
-    "local": "NODE_ENV=local npm run watch",
-    "lint": "eslint src/**/*.ts && prettier --write ./src/**/*.ts",
-    "watch": "npm-run-all build:clean -p watch:*",
-    "watch:build": "npm run build -- --watch",
-    "watch:nodemon": "wait-on build/app.js && nodemon build/app.js --watch build --watch config --ext js,json,yaml"
-  },
-  "author": "Luciano Paci",
-  "license": "ISC",
-  "dependencies": {
-    "aws-sdk": "^2.814.0",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "helmet": "^5.1.0",
-    "http-status": "^1.5.2",
-    "https": "^1.0.0",
-    "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
-    "mongoose": "^6.3.8",
-    "morgan": "^1.10.0",
-    "nconf": "^0.12.0",
-    "nodemailer": "^6.6.1",
-    "sqs-consumer": "^5.7.0",
-    "winston": "^3.7.2"
-  },
+  "private": true,
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/js-yaml": "^4.0.5",
-    "@types/lodash": "^4.14.182",
-    "@types/mongoose": "^5.11.97",
-    "@types/morgan": "^1.9.3",
-    "@types/nconf": "^0.10.2",
-    "@types/node": "^18.0.0",
-    "@types/nodemailer": "^6.4.4",
-    "@typescript-eslint/eslint-plugin": "^5.30.0",
-    "@typescript-eslint/parser": "^5.30.0",
-    "eslint": "^8.18.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-react": "^7.30.0",
-    "http-proxy-middleware": "^2.0.6",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "nodemon": "^2.0.16",
-    "npm": "^8.13.1",
-    "npm-run-all": "^4.1.5",
-    "prettier": "2.7.1",
-    "ts-node": "^10.8.1",
-    "typescript": "^4.7.4",
-    "wait-on": "^6.0.1"
+    "lerna": "^5.1.8"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run build && lint-staged"
-    }
+  "scripts": {
+    "local": "lerna run local --stream",
+    "build": "lerna build"
   },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }

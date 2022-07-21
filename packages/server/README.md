@@ -10,8 +10,6 @@ It allows to create orders via API that are sent to a queue so they can be consu
 * AWS SQS
 * Mongo
 * Mongoose
-* React
-* Redux Toolkit
 
 ## Architecture
 

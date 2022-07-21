@@ -1,0 +1,12 @@
+/node_modules
+
+*.log
+
+# TS Build
+/build
+
+# Local File
+
+config/local.yaml
+
+.DS_Store
