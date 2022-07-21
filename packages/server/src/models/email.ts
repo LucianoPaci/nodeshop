@@ -1,5 +1,5 @@
-import mongoose, { Model, Schema, Types } from 'mongoose'
-import { BaseDocument } from './base'
+import mongoose, { Schema, Types } from 'mongoose'
+import { BaseDocument } from '@nodeshop/types'
 
 export interface EmailFields {
   from: string
@@ -51,4 +51,4 @@ const emailSchema = new Schema(
 
 export type Email = EmailWithOrder & BaseDocument
 
-export const model = mongoose.model('email', emailSchema) as Model<Email>
+export const model = mongoose.model('email', emailSchema)

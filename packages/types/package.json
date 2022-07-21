@@ -14,6 +14,7 @@
   },
   "scripts": {
     "start": "tsdx watch",
+    "local": "NODE_ENV=local tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
@@ -45,10 +46,14 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.8",
+    "@types/mongoose": "^5.11.97",
     "husky": "^8.0.1",
     "size-limit": "^7.0.8",
     "tsdx": "^0.14.1",
     "tslib": "^2.4.0",
     "typescript": "^3.9.10"
+  },
+  "dependencies": {
+    "mongoose": "6.3.8"
   }
 }

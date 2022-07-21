@@ -1,12 +1,5 @@
-import mongoose, { Model, Schema } from 'mongoose'
-import { BaseDocument } from './base'
-
-export interface OrderFields {
-  userEmail: string
-  itemName: string
-  itemPrice: string //https://husobee.github.io/money/float/2016/09/23/never-use-floats-for-currency.html
-  itemsQuantity: number
-}
+import mongoose, { Schema } from 'mongoose'
+import { BaseDocument, OrderFields } from '@nodeshop/types'
 
 const schema = new Schema(
   {
@@ -28,6 +21,7 @@ const schema = new Schema(
     },
     updatedAt: {
       type: Date,
+      default: Date.now,
     },
     createdAt: {
       type: Date,
@@ -41,4 +35,4 @@ const schema = new Schema(
 )
 export type Order = OrderFields & BaseDocument
 
-export const model = mongoose.model('order', schema) as Model<Order>
+export const model = mongoose.model('order', schema)
