@@ -1,5 +1,5 @@
 import { Types } from 'mongoose'
-import { OrderFields, Order } from '@nodeshop/types'
+import { OrderFields, Order } from '@lucianopaci/nodeshop-types'
 import { model as OrderModel } from '../models/order'
 import { sendMessageToQueue } from '../init/queue'
 import constants from '../utils/constants'

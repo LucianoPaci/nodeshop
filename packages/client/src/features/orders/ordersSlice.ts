@@ -1,7 +1,7 @@
 import { GetOrders } from './ordersAPI'
 import { RootState } from '../../app/store'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { OrderFields } from '@nodeshop/types'
+import { OrderFields } from '@lucianopaci/nodeshop-types'
 // TODO: Add Orders Type
 export interface OrdersState {
   orders: OrderFields[]

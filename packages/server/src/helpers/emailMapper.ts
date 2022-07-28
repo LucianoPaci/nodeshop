@@ -1,4 +1,4 @@
-import { OrderFields, EmailWithOrder } from '@nodeshop/types'
+import { OrderFields, EmailWithOrder } from '@lucianopaci/nodeshop-types'
 
 export default function emailMapper(data: OrderFields & { orderId: string }) {
   const mapped: EmailWithOrder = {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { IEmailsFilter } from '@nodeshop/types'
+import { IEmailsFilter } from '@lucianopaci/nodeshop-types'
 import { ordersService, emailsService } from '../services'
 
 const getEmails = async (req: Request, res: Response) => {

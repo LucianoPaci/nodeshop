@@ -1,5 +1,5 @@
 {
-  "name": "@nodeshop/client",
+  "name": "@lucianopaci/nodeshop-client",
   "version": "0.2.0",
   "private": true,
   "dependencies": {
@@ -18,7 +18,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@nodeshop/types": "^0.1.1",
+    "@lucianopaci/nodeshop-types": "^0.1.1",
     "@types/jest": "^27.5.2",
     "@types/node": "^17.0.45",
     "@types/react": "^18.0.15",
