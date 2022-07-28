@@ -3,6 +3,9 @@
   "author": "Luciano Paci",
   "version": "0.1.1",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [

@@ -13,6 +13,9 @@ build/*
 **.*.map
 **.d.ts
 
+# NPM Registry Token
+.npmrc
+
 # node-waf configuration
 .lock-wscript
 

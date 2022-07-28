@@ -1,7 +1,9 @@
 {
   "name": "@lucianopaci/nodeshop-client",
   "version": "0.2.0",
-  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
