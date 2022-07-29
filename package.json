@@ -2,11 +2,15 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "@changesets/cli": "2.22.0",
     "lerna": "^5.1.8"
   },
   "scripts": {
     "local": "lerna run local --stream --parallel",
-    "build": "lerna build"
+    "build": "lerna build",
+    "changeset-create": "changeset",
+    "changeset-apply": "changeset version",
+    "release": "lerna build && changeset publish"
   },
   "workspaces": [
     "packages/*"
