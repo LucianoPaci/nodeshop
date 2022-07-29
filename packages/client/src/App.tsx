@@ -1,5 +1,5 @@
 import { useRoutes } from 'react-router-dom'
-import logo from './logo.svg'
+import { ReactComponent as Logo } from './logo.svg'
 import routes from './app/routes'
 import './App.css'
 
@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       {renderedRoutes}
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <Logo className="App-logo" />
       </header>
     </div>
   )
