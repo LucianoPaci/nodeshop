@@ -1,22 +1,15 @@
 
 # Node Shop
 
-Project built as a monorepo that simulates Orders and Emails from a business or shop.
+Project that simulates Orders and Emails from a business or shop.
 It allows to create orders via API that are sent to a queue so they can be consumed later to create emails and send them to a dummy inbox.
 
 ###  What is used?
-* Typescript
+* Node.js
 * Express
 * AWS SQS
 * Mongo
 * Mongoose
-* React
-* Redux Toolkit
-* Lerna
-* [Changesets](https://github.com/changesets/changesets) for managing versioning and changelogs
-* [GitHub Actions](https://github.com/changesets/action) for fully automated package publishing
-* [Heroku Monorepo Buildpack](https://elements.heroku.com/buildpacks/lstoll/heroku-buildpack-monorepo)
-* https://medium.com/softup-technologies/how-to-deploy-a-monorepo-to-multiple-heroku-apps-using-github-actions-65e87dc27878
 
 ## Architecture
 

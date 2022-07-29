@@ -1,0 +1,62 @@
+{
+  "name": "@lucianopaci/nodeshop-types",
+  "author": "Luciano Paci",
+  "version": "0.2.0",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "local": "NODE_ENV=local tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "module": "dist/types.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/types.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/types.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^7.0.8",
+    "@types/mongoose": "^5.11.97",
+    "husky": "^8.0.1",
+    "size-limit": "^7.0.8",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.0",
+    "typescript": "^3.9.10"
+  },
+  "dependencies": {
+    "mongoose": "6.3.8"
+  }
+}
