@@ -7,10 +7,12 @@
   },
   "scripts": {
     "local": "lerna run local --stream --parallel",
-    "build": "lerna build",
+    "build": "lerna run build --parallel",
     "changeset-create": "changeset",
     "changeset-apply": "changeset version",
-    "release": "lerna build && changeset publish"
+    "release": "lerna build && changeset publish",
+    "clean": "lerna clean",
+    "clean:update": "lerna clean && lerna bootstrap"
   },
   "workspaces": [
     "packages/*"
