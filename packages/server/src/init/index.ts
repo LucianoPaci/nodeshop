@@ -2,6 +2,7 @@
 
 import express, { Request, Response, NextFunction } from 'express'
 import helmet from 'helmet'
+import cors from 'cors'
 import httpStatus from 'http-status'
 import morgan from 'morgan'
 
@@ -18,6 +19,13 @@ export default async function init() {
 
   // set security HTTP headers
   app.use(helmet())
+
+  // set cors
+  app.use(
+    cors({
+      origin: '*',
+    })
+  )
 
   // parse json request body
   app.use(express.json())
