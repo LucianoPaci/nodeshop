@@ -15,7 +15,7 @@
     "clean:update": "lerna clean && lerna bootstrap",
     "build:client": "lerna run build --scope=@lucianopaci/nodeshop-client",
     "build:server": "lerna run build --scope=@lucianopaci/nodeshop-server",
-    "heroku-postbuild": "if [ $CLIENT_ENV ]; then yarn run prod-frontend; elif [ $SERVER_ENV ]; then yarn run prod-backend; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
+    "heroku-postbuild": "if [ $CLIENT_ENV ]; then yarn run prod-client; elif [ $SERVER_ENV ]; then yarn run prod-server; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
     "prod-client": "yarn run build:client",
     "prod-server": "yarn run build:server"
   },
