@@ -7,16 +7,24 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 
 import './index.css'
+import { MantineProvider } from '@mantine/core'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
+    <MantineProvider
+    // theme={{
+    //   // Override any other properties from default theme
+    //   fontFamily: 'Open Sans, sans serif',
+    // }}
+    >
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
+    </MantineProvider>
   </React.StrictMode>
 )
 
