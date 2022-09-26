@@ -13,8 +13,8 @@ const Headers = () => {
   return (
     <thead>
       <tr>
-        {headers.map((header: string) => (
-          <td>{header}</td>
+        {headers.map((header: string, index: number) => (
+          <td key={`${header}-${index}`}>{header}</td>
         ))}
       </tr>
     </thead>

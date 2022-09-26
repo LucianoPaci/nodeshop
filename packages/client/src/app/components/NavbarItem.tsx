@@ -1,6 +1,6 @@
 import { UnstyledButton, Group, ThemeIcon, Text, NavLink } from '@mantine/core'
 import { Link } from 'react-router-dom'
-import { IconCirclePlus, IconMessages, IconMail } from '@tabler/icons'
+import { IconCirclePlus, IconMessages, IconMail, IconHome } from '@tabler/icons'
 import React from 'react'
 
 interface MainLinkProps {
@@ -37,6 +37,12 @@ const MainLink = ({ icon, color, label, path }: MainLinkProps) => {
 }
 
 const data = [
+  {
+    icon: <IconHome size={16} />,
+    color: 'teal',
+    label: 'Home',
+    path: '/home',
+  },
   {
     icon: <IconCirclePlus size={16} />,
     color: 'teal',
