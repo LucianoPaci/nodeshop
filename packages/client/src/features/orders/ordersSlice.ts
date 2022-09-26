@@ -1,4 +1,4 @@
-import { GetOrders } from './ordersAPI'
+import { GetOrders, PostOrder } from './ordersAPI'
 import { RootState } from '../../app/store'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { OrderFields } from '@lucianopaci/nodeshop-types'
@@ -21,6 +21,15 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
   return response.data
 })
 
+export const postOrder = createAsyncThunk(
+  'orders/postOrder',
+  async (data: any) => {
+    console.log('🚀 ~ file: ordersSlice.ts ~ line 25 ~ postOrder ~ data', data)
+    const response = await PostOrder(data)
+    return response.data
+  }
+)
+
 /* Selectors */
 export const selectOrdersState = (state: RootState) => state.orders
 
@@ -39,6 +48,16 @@ export const ordersSlice = createSlice({
         state.orders = action.payload
       })
       .addCase(fetchOrders.rejected, (state) => {
+        state.status = 'failed'
+      })
+      .addCase(postOrder.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(postOrder.fulfilled, (state, action) => {
+        state.status = 'idle'
+        state.orders = [...state.orders, action.payload]
+      })
+      .addCase(postOrder.rejected, (state) => {
         state.status = 'failed'
       })
   },
