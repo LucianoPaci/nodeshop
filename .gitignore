@@ -43,3 +43,6 @@ build/Release
 # Typescript v1 declaration files
 typings/
 dist
+
+# Turborepo
+.turbo

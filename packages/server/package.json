@@ -7,7 +7,9 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npm-run-all \"build:tsc -- {@}\" --",
+    "build-all": "npm-run-all \"build:tsc -- {@}\" --",
+    "build": "tsc",
+    "heroku-postbuild": "npm run build",
     "build:tsc": "npm run lint && tsc",
     "build:clean": "rm -rf build",
     "prestart": "npm run build",
