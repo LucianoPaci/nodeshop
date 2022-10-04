@@ -12,11 +12,9 @@ It allows to create orders via API that are sent to a queue so they can be consu
 * Mongoose
 * React
 * Redux Toolkit
-* Lerna
+* Turborepo
 * [Changesets](https://github.com/changesets/changesets) for managing versioning and changelogs
 * [GitHub Actions](https://github.com/changesets/action) for fully automated package publishing
-* [Heroku Monorepo Buildpack](https://elements.heroku.com/buildpacks/lstoll/heroku-buildpack-monorepo)
-* https://medium.com/softup-technologies/how-to-deploy-a-monorepo-to-multiple-heroku-apps-using-github-actions-65e87dc27878
 
 ## Architecture
 
@@ -44,14 +42,15 @@ In there, you should get all the SMTP Settings as described below and add them i
  
 
 ## How to run it?
-If you created a `config/local.yaml` file, then run:
+
+First, install all packages:
 ```bash
-npm run local
+pnpm run install
 ```
 
-If you didn't, then run:
+After you created a`config/local.yaml` file, then run:
 ```bash
-npm run dev
+pnpm run local
 ```
 
 
