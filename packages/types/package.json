@@ -54,7 +54,8 @@
     "size-limit": "^7.0.8",
     "tsdx": "^0.14.1",
     "tslib": "^2.4.0",
-    "typescript": "^3.9.10"
+    "typescript": "^3.9.10",
+    "tsconfig": "workspace:*"
   },
   "dependencies": {
     "mongoose": "6.3.8"
