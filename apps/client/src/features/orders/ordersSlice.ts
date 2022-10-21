@@ -24,7 +24,6 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
 export const postOrder = createAsyncThunk(
   'orders/postOrder',
   async (data: any) => {
-    console.log('🚀 ~ file: ordersSlice.ts ~ line 25 ~ postOrder ~ data', data)
     const response = await PostOrder(data)
     return response.data
   }

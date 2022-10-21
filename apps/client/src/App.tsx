@@ -4,12 +4,7 @@ import './App.css'
 
 function App() {
   const renderedRoutes = useRoutes(routes)
-  return (
-    <div className="App">
-      {renderedRoutes}
-      <header className="App-header"></header>
-    </div>
-  )
+  return <div className="App">{renderedRoutes}</div>
 }
 
 export default App

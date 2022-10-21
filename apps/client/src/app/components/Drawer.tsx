@@ -1,22 +1,23 @@
-import { useState } from 'react'
 import { Drawer, Button, Group, Stack, TextInput } from '@mantine/core'
 type CustomDrawerProps = {
   form: any
   onHandleSubmit: any
   status: string
+  onHandleOpen: any
+  open: boolean
 }
 export default function CustomDrawer({
   form,
   onHandleSubmit,
   status,
+  onHandleOpen,
+  open,
 }: CustomDrawerProps) {
-  const [opened, setOpened] = useState(false)
-
   return (
     <>
       <Drawer
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={open}
+        onClose={() => onHandleOpen(false)}
         title="Create Order"
         padding="xl"
         size="xl"
@@ -45,7 +46,7 @@ export default function CustomDrawer({
       </Drawer>
 
       <Group position="center">
-        <Button onClick={() => setOpened(true)}>Create Order</Button>
+        <Button onClick={() => onHandleOpen(true)}>Create Order</Button>
       </Group>
     </>
   )
