@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
-import { BaseDocument } from './basic';
+import { BaseDocument, Timestamps } from './basic';
 
+// Create data
 export interface EmailFields {
   from: string;
   to: string;
@@ -15,6 +16,13 @@ export interface EmailWithOrder extends EmailFields {
 export interface IEmailsFilter {
   from?: string;
   to?: string;
+}
+
+// Fetch data
+export type IEmail = EmailFields & Timestamps;
+
+export interface IEmailWithOrder extends IEmail {
+  orderId: string | Types.ObjectId;
 }
 
 export type Email = EmailWithOrder & BaseDocument;

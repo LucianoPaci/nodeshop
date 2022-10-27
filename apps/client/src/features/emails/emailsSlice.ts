@@ -1,10 +1,10 @@
-import { EmailFields } from '@lucianopaci/nodeshop-types'
+import { IEmail } from '@lucianopaci/nodeshop-types'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 import { GetEmails } from './emailsAPI'
 
 export interface EmailsState {
-  emails: EmailFields[]
+  emails: IEmail[]
   error: any
   status: 'idle' | 'loading' | 'failed'
 }

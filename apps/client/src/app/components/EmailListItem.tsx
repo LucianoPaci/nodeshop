@@ -1,16 +1,22 @@
-import { UnstyledButton, Group, ThemeIcon, Text } from '@mantine/core'
+import {
+  UnstyledButton,
+  Group,
+  ThemeIcon,
+  Text,
+  Box,
+  Stack,
+} from '@mantine/core'
 
-interface MainLinkProps {
-  icon: React.ReactNode
-  color: string
-  label: string
+import { IEmail } from '@lucianopaci/nodeshop-types'
+
+interface EmailItemProps {
+  email: IEmail
 }
-const EmailItem = ({ icon, color, label }: MainLinkProps) => {
+
+const EmailItem = ({ email }: EmailItemProps) => {
   return (
-    <UnstyledButton
+    <Box
       sx={(theme) => ({
-        display: 'block',
-        width: '100%',
         padding: theme.spacing.xs,
         borderRadius: theme.radius.sm,
         color:
@@ -24,14 +30,18 @@ const EmailItem = ({ icon, color, label }: MainLinkProps) => {
         },
       })}
     >
-      <Group>
-        <ThemeIcon color={color} variant="light">
-          {icon}
-        </ThemeIcon>
-
-        <Text size="sm">{label}</Text>
-      </Group>
-    </UnstyledButton>
+      {/* <Group> */}
+      <Stack align="flex-start" justify="flex-start">
+        <Text size="sm">{email.subject}</Text>
+        <Group position="apart" sx={{ width: '100%' }}>
+          <Box>{`to: ${email.to}`}</Box>
+          {email?.createdAt && (
+            <Box>{new Date(email.createdAt).toLocaleDateString('es-AR')}</Box>
+          )}
+        </Group>
+      </Stack>
+      {/* </Group> */}
+    </Box>
   )
 }
 

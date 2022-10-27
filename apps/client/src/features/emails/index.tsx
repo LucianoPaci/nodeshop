@@ -147,8 +147,11 @@ const Emails = (props: Props) => {
   const dispatch = useAppDispatch()
 
   const { emails, status } = useAppSelector(selectEmailsState)
+  console.log('🚀 ~ file: index.tsx ~ line 150 ~ Emails ~ emails', emails)
   const { classes } = useStyles()
-  const items = data.map((link) => <EmailListItem {...link} key={link.label} />)
+  const items = emails.map((email) => (
+    <EmailListItem email={email} key={email.subject} />
+  ))
 
   useEffect(() => {
     dispatch(fetchEmails())

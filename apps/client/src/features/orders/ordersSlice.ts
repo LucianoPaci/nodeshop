@@ -1,10 +1,10 @@
 import { GetOrders, PostOrder } from './ordersAPI'
 import { RootState } from '../../app/store'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { OrderFields } from '@lucianopaci/nodeshop-types'
+import { IOrder } from '@lucianopaci/nodeshop-types'
 // TODO: Add Orders Type
 export interface OrdersState {
-  orders: OrderFields[]
+  orders: IOrder[]
   error: any
   status: 'idle' | 'loading' | 'failed'
 }

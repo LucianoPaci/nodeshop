@@ -12,3 +12,8 @@ export interface BaseDocument extends Document {
 export interface BaseLeanDocument {
   _id: Types.ObjectId;
 }
+
+export interface Timestamps {
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+}
