@@ -1,174 +1,61 @@
+import { IEmail } from '@lucianopaci/nodeshop-types'
 import { createStyles, Grid, ScrollArea } from '@mantine/core'
-import {
-  IconGitPullRequest,
-  IconAlertCircle,
-  IconMessages,
-  IconDatabase,
-} from '@tabler/icons'
-import { useEffect } from 'react'
+import { Letter } from 'react-letter'
+
+import { useEffect, useState } from 'react'
 import EmailListItem from '../../app/components/EmailListItem'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectEmailsState, fetchEmails } from './emailsSlice'
+import EmailDetails from '../../app/components/EmailDetails'
 type Props = {}
 
 const useStyles = createStyles((theme) => ({
   emailList: {
     border: `1px solid black`,
+    margin: `0 16px`,
   },
   emailDetails: {
     border: `1px solid red`,
+    backgroundColor: '#fff',
+    margin: `0 16px`,
   },
 }))
 
-const data = [
-  {
-    icon: <IconGitPullRequest size={16} />,
-    color: 'blue',
-    label: 'Email - Order #499102',
-  },
-  {
-    icon: <IconAlertCircle size={16} />,
-    color: 'teal',
-    label: 'Email - Order #18389',
-  },
-  {
-    icon: <IconMessages size={16} />,
-    color: 'violet',
-    label: 'Email - Order #599912',
-  },
-  {
-    icon: <IconDatabase size={16} />,
-    color: 'grape',
-    label: 'Email - Order #918491',
-  },
-  {
-    icon: <IconGitPullRequest size={16} />,
-    color: 'blue',
-    label: 'Email - Order #499102',
-  },
-  {
-    icon: <IconAlertCircle size={16} />,
-    color: 'teal',
-    label: 'Email - Order #18389',
-  },
-  {
-    icon: <IconMessages size={16} />,
-    color: 'violet',
-    label: 'Email - Order #599912',
-  },
-  {
-    icon: <IconDatabase size={16} />,
-    color: 'grape',
-    label: 'Email - Order #888372',
-  },
-  {
-    icon: <IconGitPullRequest size={16} />,
-    color: 'blue',
-    label: 'Email - Order #499102',
-  },
-  {
-    icon: <IconAlertCircle size={16} />,
-    color: 'teal',
-    label: 'Email - Order #18389',
-  },
-  {
-    icon: <IconMessages size={16} />,
-    color: 'violet',
-    label: 'Email - Order #599912',
-  },
-  {
-    icon: <IconDatabase size={16} />,
-    color: 'grape',
-    label: 'Email - Order #888372',
-  },
-  {
-    icon: <IconGitPullRequest size={16} />,
-    color: 'blue',
-    label: 'Email - Order #499102',
-  },
-  {
-    icon: <IconAlertCircle size={16} />,
-    color: 'teal',
-    label: 'Email - Order #18389',
-  },
-  {
-    icon: <IconMessages size={16} />,
-    color: 'violet',
-    label: 'Email - Order #599912',
-  },
-  {
-    icon: <IconDatabase size={16} />,
-    color: 'grape',
-    label: 'Email - Order #888372',
-  },
-  {
-    icon: <IconGitPullRequest size={16} />,
-    color: 'blue',
-    label: 'Email - Order #499102',
-  },
-  {
-    icon: <IconAlertCircle size={16} />,
-    color: 'teal',
-    label: 'Email - Order #18389',
-  },
-  {
-    icon: <IconMessages size={16} />,
-    color: 'violet',
-    label: 'Email - Order #599912',
-  },
-  {
-    icon: <IconDatabase size={16} />,
-    color: 'grape',
-    label: 'Email - Order #888372',
-  },
-  {
-    icon: <IconGitPullRequest size={16} />,
-    color: 'blue',
-    label: 'Email - Order #499102',
-  },
-  {
-    icon: <IconAlertCircle size={16} />,
-    color: 'teal',
-    label: 'Email - Order #18389',
-  },
-  {
-    icon: <IconMessages size={16} />,
-    color: 'violet',
-    label: 'Email - Order #599912',
-  },
-  {
-    icon: <IconDatabase size={16} />,
-    color: 'grape',
-    label: 'Email - Order #888372',
-  },
-]
-
 const Emails = (props: Props) => {
   const dispatch = useAppDispatch()
+  const [selectedEmail, setSelectedEmail] = useState<IEmail | null>(null)
+
+  const handleSelectEmail = (id) => {
+    console.log('clicked' + id)
+    const found = emails.find((e: IEmail) => e._id.toString() === id)
+    if (found) {
+      setSelectedEmail(found)
+    }
+  }
 
   const { emails, status } = useAppSelector(selectEmailsState)
-  console.log('🚀 ~ file: index.tsx ~ line 150 ~ Emails ~ emails', emails)
   const { classes } = useStyles()
-  const items = emails.map((email) => (
-    <EmailListItem email={email} key={email.subject} />
+
+  const items = emails.map((email: IEmail) => (
+    <EmailListItem
+      email={email}
+      onHandleSelectEmail={handleSelectEmail}
+      key={email._id.toString()}
+    />
   ))
 
   useEffect(() => {
     dispatch(fetchEmails())
   }, [dispatch])
   return (
-    <Grid>
+    <Grid gutter={'xl'}>
       <Grid.Col className={classes.emailList} span={4}>
         <ScrollArea.Autosize maxHeight={850} type={'never'}>
-          {items}
+          {status === 'loading' ? <p>Loading</p> : items}
         </ScrollArea.Autosize>
       </Grid.Col>
       <Grid.Col className={classes.emailDetails} span={'auto'}>
-        <div>Details</div>
-        <div>Details</div>
-        <div>Details</div>
-        <div>Details</div>
-        <div>Details</div>
+        {selectedEmail && <EmailDetails email={selectedEmail} />}
       </Grid.Col>
     </Grid>
   )

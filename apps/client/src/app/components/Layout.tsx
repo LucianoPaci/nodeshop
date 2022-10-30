@@ -22,9 +22,7 @@ const Layout = () => {
       styles={(theme) => ({
         main: {
           backgroundColor:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
-              : theme.colors.gray[3],
+            theme.colorScheme === 'dark' ? theme.colors.dark[8] : '#ffffff',
         },
       })}
     >

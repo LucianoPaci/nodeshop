@@ -14,10 +14,12 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <MantineProvider
-    // theme={{
-    //   // Override any other properties from default theme
-    //   fontFamily: 'Open Sans, sans serif',
-    // }}
+      theme={
+        {
+          // Override any other properties from default theme
+          // fontFamily: 'Open Sans, sans serif',
+        }
+      }
     >
       <BrowserRouter>
         <Provider store={store}>

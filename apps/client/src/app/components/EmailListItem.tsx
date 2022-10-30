@@ -11,11 +11,13 @@ import { IEmail } from '@lucianopaci/nodeshop-types'
 
 interface EmailItemProps {
   email: IEmail
+  onHandleSelectEmail: (id: any) => void
 }
 
-const EmailItem = ({ email }: EmailItemProps) => {
+const EmailItem = ({ email, onHandleSelectEmail }: EmailItemProps) => {
   return (
     <Box
+      onClick={() => onHandleSelectEmail(email._id.toString())}
       sx={(theme) => ({
         padding: theme.spacing.xs,
         borderRadius: theme.radius.sm,

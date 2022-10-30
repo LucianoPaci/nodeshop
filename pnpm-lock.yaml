@@ -32,6 +32,7 @@ importers:
       env-cmd: ^10.1.0
       react: ^18.2.0
       react-dom: ^18.2.0
+      react-letter: ^0.3.1
       react-redux: ^8.0.2
       react-router-dom: ^6.3.0
       react-scripts: 5.0.1
@@ -53,6 +54,7 @@ importers:
       env-cmd: 10.1.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-letter: 0.3.1_react@18.2.0
       react-redux: 8.0.4_5uumaiclxbdbzaqafclbf6maf4
       react-router-dom: 6.4.1_biqbaboplfbrettd7655fr4n2y
       react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
@@ -9920,6 +9922,10 @@ packages:
     dependencies:
       language-subtag-registry: 0.3.22
 
+  /lettersanitizer/1.0.4:
+    resolution: {integrity: sha512-kQmcAvPF291KnljrsZa6d7v+LawuBLtUIaVd7c0FgD+198RNnBWZDkOJ3wOS4R4ls1xlLBWLY4+g6g3O7lHzng==}
+    dev: false
+
   /leven/3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
     engines: {node: '>=6'}
@@ -12245,6 +12251,16 @@ packages:
 
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+    dev: false
+
+  /react-letter/0.3.1_react@18.2.0:
+    resolution: {integrity: sha512-++3Dz6CENKRvsjqF1/sOjBgJzNnQJp+RbkW61DG27P31O34C9ExubqWGG6qQl7gFIRmNW+Z53sGlvH6oMwS+bg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      lettersanitizer: 1.0.4
+      react: 18.2.0
     dev: false
 
   /react-redux/8.0.4_5uumaiclxbdbzaqafclbf6maf4:

@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { BaseDocument, Timestamps } from './basic';
+import { BaseDocument, BaseLeanDocument, Timestamps } from './basic';
 
 // Create data
 export interface EmailFields {
@@ -19,7 +19,10 @@ export interface IEmailsFilter {
 }
 
 // Fetch data
-export type IEmail = EmailFields & Timestamps;
+export interface IEmail extends EmailFields, BaseLeanDocument {
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+}
 
 export interface IEmailWithOrder extends IEmail {
   orderId: string | Types.ObjectId;
