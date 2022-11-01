@@ -19,9 +19,16 @@ const getById = async (id: string | Types.ObjectId) => {
   return order
 }
 
-const getOrders = async (filter: any, limit: number | string) => {
+const getOrders = async (
+  filter: any,
+  limit: number | string,
+  sort?: string
+) => {
   const parsedLimit = typeof limit === 'string' ? parseInt(limit) : limit
-  const orders = await OrderModel.find(filter).limit(parsedLimit)
+  const parsedSort = sort === 'desc' ? -1 : 1
+  const orders = await OrderModel.find(filter)
+    .sort({ _id: parsedSort })
+    .limit(parsedLimit)
 
   return orders
 }
