@@ -2,6 +2,7 @@ import { Types } from 'mongoose'
 import { OrderFields, Order } from '@lucianopaci/nodeshop-types'
 import { model as OrderModel } from '../models/order'
 import { sendMessageToQueue } from '../init/queue'
+import { OrderStatus } from 'aws-sdk/clients/outposts'
 // import constants from '../utils/constants'
 
 const create = async (data: OrderFields) => {
@@ -25,4 +26,19 @@ const getOrders = async (filter: any, limit: number | string) => {
   return orders
 }
 
-export { create, getById, getOrders }
+const updateOrder = async (
+  id: string | Types.ObjectId,
+  status: OrderStatus
+  // order: OrderFields & { status: string }
+) => {
+  try {
+    const update = await OrderModel.updateOne({ _id: id }, { status })
+    if (update.matchedCount > 0) {
+      return getById(id)
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
+export { create, getById, getOrders, updateOrder }

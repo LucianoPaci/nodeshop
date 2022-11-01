@@ -38,4 +38,12 @@ const getOrders = async (req: Request, res: Response) => {
   res.send(orders)
 }
 
-export { createOrder, getOrderById, getOrders }
+const updateOrder = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { status } = req.body
+
+  const updated = await ordersService.updateOrder(id, status)
+  res.send(updated)
+}
+
+export { createOrder, getOrderById, getOrders, updateOrder }

@@ -1,3 +1,4 @@
+import { OrderStatus } from '@lucianopaci/nodeshop-types'
 import mongoose, { Schema } from 'mongoose'
 
 const schema = new Schema(
@@ -17,6 +18,11 @@ const schema = new Schema(
     itemsQuantity: {
       type: Number,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: OrderStatus,
+      default: 'pending',
     },
     updatedAt: {
       type: Date,

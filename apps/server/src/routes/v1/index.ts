@@ -12,6 +12,7 @@ router.get('/status', (req: Request, res: Response) => {
  */
 router.post('/order', ordersController.createOrder)
 router.get('/order/:id', ordersController.getOrderById)
+router.post('/order/:id', ordersController.updateOrder)
 router.get('/orders', ordersController.getOrders)
 
 /**
