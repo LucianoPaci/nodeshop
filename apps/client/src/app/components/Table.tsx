@@ -1,6 +1,12 @@
-import { OrderFields } from '@lucianopaci/nodeshop-types'
-import { createStyles, Table } from '@mantine/core'
-
+import { OrderFields, OrderStatus } from '@lucianopaci/nodeshop-types'
+import { createStyles, Table, Group, Badge } from '@mantine/core'
+const StatusColors = {
+  [OrderStatus.FAILED]: 'red',
+  [OrderStatus.DELIVERED]: 'green',
+  [OrderStatus.PENDING]: 'yellow',
+  [OrderStatus.CANCELLED]: 'brown',
+  [OrderStatus.REJECTED]: 'red',
+}
 type Props = {
   elements: OrderFields[]
 }
@@ -42,7 +48,18 @@ const Row = ({ data, key }: RowProps) => {
       <td>{data.itemName}</td>
       <td>{data.itemPrice}</td>
       <td>{data.itemsQuantity}</td>
-      <td>{data.status}</td>
+      <td>
+        <Group>
+          <Badge
+            size={'lg'}
+            variant={'dot'}
+            key={data.status}
+            color={StatusColors[data.status]}
+          >
+            {data.status}
+          </Badge>
+        </Group>
+      </td>
     </tr>
   )
 }
