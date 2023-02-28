@@ -16,7 +16,8 @@ const initialState: EmailsState = {
 /* Async Fn */
 
 export const fetchEmails = createAsyncThunk('emails/fetchEmails', async () => {
-  const response = await GetEmails()
+  const sorted = 'desc'
+  const response = await GetEmails({ sorted })
   return response.data
 })
 
