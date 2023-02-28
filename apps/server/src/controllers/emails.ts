@@ -5,13 +5,14 @@ import { ordersService, emailsService } from '../services'
 const getEmails = async (req: Request, res: Response) => {
   const { from, to } = req.query
   const limit = req.query.limit as string
+  const sort = req.query.sort as string
 
   const filter: IEmailsFilter = {}
 
   if (from) filter.from = from as string
   if (to) filter.to = to as string
 
-  const emails = await emailsService.findEmails(filter, limit)
+  const emails = await emailsService.findEmails(filter, limit, sort)
   res.send(emails)
 }
 

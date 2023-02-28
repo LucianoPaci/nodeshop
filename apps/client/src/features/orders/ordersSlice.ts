@@ -1,10 +1,10 @@
 import { GetOrders, PostOrder } from './ordersAPI'
 import { RootState } from '../../app/store'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { OrderFields } from '@lucianopaci/nodeshop-types'
+import { IOrder } from '@lucianopaci/nodeshop-types'
 // TODO: Add Orders Type
 export interface OrdersState {
-  orders: OrderFields[]
+  orders: IOrder[]
   error: any
   status: 'idle' | 'loading' | 'failed'
 }
@@ -24,7 +24,6 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
 export const postOrder = createAsyncThunk(
   'orders/postOrder',
   async (data: any) => {
-    console.log('🚀 ~ file: ordersSlice.ts ~ line 25 ~ postOrder ~ data', data)
     const response = await PostOrder(data)
     return response.data
   }

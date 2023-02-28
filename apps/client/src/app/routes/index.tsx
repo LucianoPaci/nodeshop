@@ -2,6 +2,8 @@ import { RouteObject } from 'react-router-dom'
 import Layout from '../components/Layout'
 import Orders from '../../features/orders'
 import Home from '../components/Home'
+import Emails from '../../features/emails'
+import NotFound from '../components/404'
 export type CustomRouteObject = RouteObject & {
   title: string
 }
@@ -15,7 +17,7 @@ const childrenRoutes: CustomRouteObject[] = [
   {
     path: '/emails',
     title: 'Emails',
-    element: <h3>Emails</h3>,
+    element: <Emails />,
   },
   {
     path: '/home',
@@ -25,7 +27,7 @@ const childrenRoutes: CustomRouteObject[] = [
   {
     path: '*',
     title: 'Not Found',
-    element: <h2>Flasheaste amigo</h2>,
+    element: <NotFound />,
   },
 ]
 

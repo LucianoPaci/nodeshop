@@ -7,7 +7,7 @@ const Layout = () => {
       fixed
       padding="md"
       navbar={
-        <Navbar width={{ base: 200 }} height={500} p="xs">
+        <Navbar width={{ base: 200 }} p="xs">
           <Navbar.Section>
             <MainLinks />
           </Navbar.Section>
@@ -22,9 +22,7 @@ const Layout = () => {
       styles={(theme) => ({
         main: {
           backgroundColor:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
-              : theme.colors.gray[3],
+            theme.colorScheme === 'dark' ? theme.colors.dark[8] : '#ffffff',
         },
       })}
     >

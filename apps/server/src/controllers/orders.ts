@@ -27,15 +27,24 @@ const getOrders = async (req: Request, res: Response) => {
   const { userEmail, itemName } = req.query
 
   const limit = req.query.limit as string
+  const sort = req.query.sort as string
 
   const filter: IOrdersFilter = {}
 
   if (userEmail) filter.userEmail = userEmail as string
   if (itemName) filter.itemName = itemName as string
 
-  const orders = await ordersService.getOrders(filter, limit)
+  const orders = await ordersService.getOrders(filter, limit, sort)
 
   res.send(orders)
 }
 
-export { createOrder, getOrderById, getOrders }
+const updateOrder = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { status } = req.body
+
+  const updated = await ordersService.updateOrder(id, status)
+  res.send(updated)
+}
+
+export { createOrder, getOrderById, getOrders, updateOrder }
