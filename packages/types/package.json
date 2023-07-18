@@ -58,6 +58,6 @@
     "tsconfig": "workspace:*"
   },
   "dependencies": {
-    "mongoose": "6.3.8"
+    "mongoose": "6.11.3"
   }
 }
